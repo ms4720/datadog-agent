@@ -41,6 +41,15 @@ const (
 	maxRetryInterval  = 90 * time.Second
 )
 
+// Transaction represents the task to process for a Worker.
+type Transaction interface {
+	Process(ctx context.Context, client *http.Client) error
+	Reschedule()
+	GetNextFlush() time.Time
+	GetCreatedAt() time.Time
+	GetTarget() string
+}
+
 var apiKeyRegExp = regexp.MustCompile("api_key=*\\w+(\\w{5})")
 
 // NewHTTPTransaction returns a new HTTPTransaction.
