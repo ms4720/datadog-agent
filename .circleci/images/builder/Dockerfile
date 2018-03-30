@@ -1,11 +1,15 @@
-FROM golang:1.10.0
+FROM golang:1.10.0-stretch
 
 RUN sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list \
     && sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list \
     && sed -i 's/main/main contrib non-free/' /etc/apt/sources.list
 
-RUN apt-get update && apt-get install -y python2.7-dev autoconf autogen intltool libssl1.0-dev
-RUN apt-get install -y libsnmp-base libsnmp-dev libpq-dev snmp-mibs-downloader
+RUN apt-get update \
+ && apt-get install -y python2.7-dev autoconf autogen intltool libssl1.0-dev \
+                       libsnmp-base libsnmp-dev libpq-dev snmp-mibs-downloader \
+ && apt-get install --reinstall ca-certificates \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; fi
 
 # Ruby,,,
 RUN mkdir -p /usr/local/etc \
@@ -76,7 +80,8 @@ RUN apt-get update && apt-get install -y python-pip  \
 	&& pip install invoke \
 	&& pip install docker==3.0.1 \
 	&& pip install reno   \
-	&& pip install requests
+	&& pip install requests \
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; fi
 
 # install things globally, for great justice
 # and don't create ".bundle" in all our apps
