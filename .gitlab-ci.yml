@@ -47,7 +47,7 @@ before_script:
 
 run_test_cmd:
   stage: run_test_cmd
-  image: 486234852809.dkr.ecr.us-east-1.amazonaws.com/ci/datadog-agent-builders/deploy:latest
+  image: 486234852809.dkr.ecr.us-east-1.amazonaws.com/ci/datadog-agent-builders/rpm_x64:latest
   tags: [ "runner:main", "size:large" ]
   script:
     - aws cloudfront list-invalidations --distribution-id E18ZGDURBK5K6X
