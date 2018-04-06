@@ -1,4 +1,5 @@
 stages:
+  - run_test_cmd
   - source_test
   - binary_build
   - integration_test
@@ -44,6 +45,14 @@ before_script:
   - cd $SRC_PATH
   - inv -e deps
 
+run_test_cmd:
+  stage: run_test_cmd
+  image: 486234852809.dkr.ecr.us-east-1.amazonaws.com/ci/datadog-agent-builders/deb_x64:latest
+  tags: [ "runner:main", "size:large" ]
+  script:
+    - aws cloudfront list-invalidations --distribution-id E18ZGDURBK5K6X
+  #  - aws cloudfront create-invalidation --distribution-id E18ZGDURBK5K6X /*stable*
+  #  - aws cloudfront create-invalidation --distribution-id E17ZLUWTA3BBMD /*stable*
 
 #
 # source_test
